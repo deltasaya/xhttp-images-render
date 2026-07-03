@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildGuard - Protect Our Wildlife</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --accent: #d4a373;
+            --dark: #1b4332;
+            --text: #2d3436;
+            --gray: #636e72;
+            --light: #f8f9f7;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; line-height: 1.7; color: var(--text); }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s;
+        }
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        .navbar.scrolled .logo, .navbar.scrolled .nav-links a { color: var(--dark); }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+        .logo i { color: var(--accent); }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=1920') center/cover;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        #particles { 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: auto;
+        }
+        .hero-content {
+            position: relative;
+            text-align: center;
+            color: var(--white);
+            max-width: 750px;
+            padding: 0 2rem;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .hero-content * { pointer-events: auto; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(212,163,115,0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 { font-size: 3.2rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.4rem;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,163,115,0.4); }
+        .btn-outline { border: 2px solid var(--white); color: var(--white); }
+        .btn-outline:hover { background: var(--white); color: var(--dark); }
+
+        /* Stats */
+        .stats { background: var(--white); padding: 4rem 5%; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: var(--light);
+            border: 1px solid #e8e8e8;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label { color: var(--gray); font-size: 0.85rem; }
+
+        /* Section Common */
+        .section-header { text-align: center; max-width: 550px; margin: 0 auto 2.5rem; }
+        .section-badge {
+            display: inline-block;
+            background: rgba(45,106,79,0.1);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .section-header h2 { font-size: 2.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.8rem; }
+        .section-header p { color: var(--gray); }
+
+        /* Species */
+        .species { padding: 5rem 5%; background: var(--light); }
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .species-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 340px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .species-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .species-card:hover img { transform: scale(1.1); }
+        .species-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.2rem;
+            background: linear-gradient(transparent, rgba(27,67,50,0.95));
+            color: var(--white);
+            transform: translateY(30px);
+            transition: transform 0.4s;
+        }
+        .species-card:hover .species-overlay { transform: translateY(0); }
+        .species-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+        .status-critical { background: #c0392b; }
+        .status-endangered { background: #d35400; }
+        .status-vulnerable { background: #f39c12; color: var(--dark); }
+        .species-overlay h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .species-overlay p { font-size: 0.8rem; opacity: 0.9; }
+
+        /* Actions */
+        .actions { padding: 5rem 5%; background: var(--white); }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        .action-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.8rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #e8e8e8;
+        }
+        .action-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(45,106,79,0.1);
+            border-color: var(--primary);
+        }
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--white);
+            font-size: 1.3rem;
+        }
+        .action-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .action-card p { color: var(--gray); font-size: 0.85rem; }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 4rem 5%;
+            background: var(--dark);
+            text-align: center;
+            color: var(--white);
+        }
+        .newsletter h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.8rem; }
+        .newsletter p { opacity: 0.8; margin-bottom: 1.5rem; }
+        .newsletter-form { display: flex; gap: 0.8rem; max-width: 420px; margin: 0 auto; }
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .newsletter-form button {
+            padding: 0.9rem 1.3rem;
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .newsletter-form button:hover { transform: scale(1.05); }
+
+        /* Footer */
+        footer { background: #1a1a1a; color: var(--white); padding: 3rem 5% 1.5rem; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto 2rem;
+        }
+        .footer-brand p { color: rgba(255,255,255,0.6); margin: 0.8rem 0; font-size: 0.85rem; }
+        .social-links { display: flex; gap: 0.6rem; }
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: transform 0.3s;
+        }
+        .social-links a:hover { transform: translateY(-3px); background: var(--primary-light); }
+        .footer-column h4 { font-size: 0.95rem; margin-bottom: 0.8rem; color: var(--accent); }
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 0.5rem; }
+        .footer-column a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-column a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 2.4rem; }
+            .stats-grid, .species-grid { grid-template-columns: repeat(2, 1fr); }
+            .actions-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 1.9rem; }
+            .section-header h2 { font-size: 1.7rem; }
+            .species-grid, .actions-grid { grid-template-columns: 1fr; }
+            .species-card { height: 280px; }
+            .newsletter-form { flex-direction: column; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo"><i class="fas fa-paw"></i> WildGuard</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#species">Species</a></li>
+            <li><a href="#actions">Take Action</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <canvas id="particles"></canvas>
+        <div class="hero-content">
+            <span class="hero-badge">🌍 Protecting Wildlife Since 2010</span>
+            <h1>Every Species <span>Matters</span> in Our World</h1>
+            <p>Join us in our mission to protect endangered wildlife and preserve biodiversity for future generations.</p>
+            <div>
+                <a href="#actions" class="btn btn-primary"><i class="fas fa-heart"></i> Make a Donation</a>
+                <a href="#species" class="btn btn-outline"><i class="fas fa-paw"></i> Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-globe-americas"></i></div>
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Countries Protected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-paw"></i></div>
+                <div class="stat-number">1M+</div>
+                <div class="stat-label">Animals Saved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-tree"></i></div>
+                <div class="stat-number">500K</div>
+                <div class="stat-label">Acres Preserved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Active Supporters</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="species" class="species">
+        <div class="section-header">
+            <span class="section-badge">Endangered Species</span>
+            <h2>Wildlife We're Fighting to Protect</h2>
+            <p>These magnificent creatures are facing extinction. Learn about them and how you can help.</p>
+        </div>
+        <div class="species-grid">
+            <div class="species-card">
+                <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500" alt="Giant Panda">
+                <div class="species-overlay">
+                    <span class="species-status status-vulnerable">Vulnerable</span>
+                    <h3>Giant Panda</h3>
+                    <p>Only 1,800 remain in the wild bamboo forests of China.</p>
+                </div>
+            </div>
+            <div class="species-card">
+                <img src="https://images.unsplash.com/photo-1551316679-9c6ae9dec224?w=500" alt="Siberian Tiger">
+                <div class="species-overlay">
+                    <span class="species-status status-endangered">Endangered</span>
+                    <h3>Siberian Tiger</h3>
+                    <p>Fewer than 500 in the wild. The largest of all wild cats.</p>
+                </div>
+            </div>
+            <div class="species-card">
+                <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500" alt="African Elephant">
+                <div class="species-overlay">
+                    <span class="species-status status-endangered">Endangered</span>
+                    <h3>African Elephant</h3>
+                    <p>Poaching claims 20,000 elephants annually for ivory.</p>
+                </div>
+            </div>
+            <div class="species-card">
+                <img src="https://images.unsplash.com/photo-1535338454770-8be927b5a00b?w=500" alt="Sea Turtle">
+                <div class="species-overlay">
+                    <span class="species-status status-critical">Critical</span>
+                    <h3>Sea Turtle</h3>
+                    <p>6 of 7 species threatened by ocean pollution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="actions" class="actions">
+        <div class="section-header">
+            <span class="section-badge">Get Involved</span>
+            <h2>How You Can Help</h2>
+            <p>Every action counts. Here are meaningful ways you can contribute to wildlife conservation.</p>
+        </div>
+        <div class="actions-grid">
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <h3>Make a Donation</h3>
+                <p>Your support directly funds conservation programs worldwide.</p>
+            </div>
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-users"></i></div>
+                <h3>Volunteer With Us</h3>
+                <p>Join our global network of volunteers for wildlife protection.</p>
+            </div>
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-share-alt"></i></div>
+                <h3>Spread Awareness</h3>
+                <p>Share our mission and educate others about conservation.</p>
+            </div>
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-shopping-bag"></i></div>
+                <h3>Shop Responsibly</h3>
+                <p>Avoid products from endangered species.</p>
+            </div>
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-paw"></i></div>
+                <h3>Adopt an Animal</h3>
+                <p>Symbolically adopt and support endangered animals.</p>
+            </div>
+            <div class="action-card">
+                <div class="action-icon"><i class="fas fa-bullhorn"></i></div>
+                <h3>Advocate for Change</h3>
+                <p>Support legislation that protects wildlife habitats.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <h2>Stay Connected</h2>
+        <p>Subscribe to our newsletter for the latest updates on wildlife conservation.</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo"><i class="fas fa-paw"></i> WildGuard</a>
+                <p>Dedicated to protecting endangered wildlife and preserving biodiversity for future generations.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#species">Species</a></li>
+                    <li><a href="#actions">Get Involved</a></li>
+                    <li><a href="#">News</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">Adopt</a></li>
+                    <li><a href="#">Volunteer</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 WildGuard. All rights reserved. Together, we protect our planet's wildlife.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Particle animation
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        const hero = document.querySelector('.hero');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resize() {
+            canvas.width = hero.offsetWidth;
+            canvas.height = hero.offsetHeight;
+            init();
+        }
+        
+        window.addEventListener('load', resize);
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+            }
+            update() {
+                // 鼠标推开效果
+                if (mouse.x != null) {
+                    let dx = this.x - mouse.x;
+                    let dy = this.y - mouse.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        let force = (100 - dist) / 100;
+                        this.x += (dx / dist) * force * 3;
+                        this.y += (dy / dist) * force * 3;
+                    }
+                }
+                this.x += this.vx;
+                this.y += this.vy;
+                // 边界反弹
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                // 保持在边界内
+                this.x = Math.max(0, Math.min(canvas.width, this.x));
+                this.y = Math.max(0, Math.min(canvas.height, this.y));
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(212,163,115,0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 10000);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function connect() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(212,163,115,${0.35 - dist/340})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connect();
+            requestAnimationFrame(animate);
+        }
+
+        hero.addEventListener('mousemove', e => {
+            let rect = hero.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        hero.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+        animate();
+    </script>
+</body>
+</html>
